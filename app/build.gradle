@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion compileSdkVer
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false//不开启lint检查，建议抽空开启为true打包，然后修复各种不规范的地方；
+        abortOnError false
+    }
+    defaultConfig {
+        applicationId "com.walker.cordova.testapp"
+        minSdkVersion minsdkVer
+        targetSdkVersion targetSdkVer
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        versionCode 1
+        versionName "1.0.0"
+        //为flavor设置一个版本，命名是随意的
+        flavorDimensions "versionCode"
+    }
+    buildTypes {
+        release {
+            buildConfigField "Boolean", "configure1", "false"//配置项1
+            minifyEnabled false
+            shrinkResources false //去除无用资源
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFileName = "TestApp_" + variant.getVersionName() + "_release.apk"
+                }
+            }
+            zipAlignEnabled true
+            debuggable false//去掉这个，可减少2M大小
+            ndk {
+                //设置支持的SO库架构
+                abiFilters 'armeabi', 'armeabi-v7a'//, 'arm64-v8a', 'x86','x86_64'
+            }
+        }
+        debug {
+            buildConfigField "Boolean", "configure1", "false"//配置项1
+            shrinkResources false
+            applicationIdSuffix 'debug'//追加包名后缀
+            versionNameSuffix 'debug'
+            zipAlignEnabled true
+            ndk {
+                //设置支持的SO库架构
+                abiFilters 'armeabi', 'armeabi-v7a'//, 'arm64-v8a', 'x86','x86_64'
+            }
+        }
+    }
+    //flutter相关声明
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    buildToolsVersion '28.0.3'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    implementation 'com.github.piasy:BigImageViewer:1.6.6'
+
+    api('io.socket:socket.io-client:0.8.3') {//socketio//有1.0.0版本
+        exclude group: 'org.json', module: 'json'
+    }
+    api project(':framework-x5')
+}
+

@@ -1,0 +1,23 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:1-22:12
+	package
+		ADDED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:21:7-35
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml
+	android:versionName
+		ADDED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:21:36-61
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:20:11-69
+	android:versionCode
+		ADDED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml:21:62-85
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml
+		INJECTED from /Users/walker/开发/Android/CordovaTestApp/framework640/AndroidManifest.xml

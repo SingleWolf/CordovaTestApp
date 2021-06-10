@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleView">
+        <attr name="cums_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="NationalFlag">
+        <attr name="overall_color" format="color"/>
+        <attr name="main_star_color" format="color"/>
+        <attr name="little_star_color" format="color"/>
+    </declare-styleable>
+</resources>
