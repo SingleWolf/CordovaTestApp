@@ -57,7 +57,7 @@ import java.lang.reflect.Method;
  * Class uses two-phase initialization. However, CordovaWebView is responsible for calling .init().
  */
 public class SystemWebViewEngine implements CordovaWebViewEngine {
-    public static final String TAG = "SystemWebViewEngine";
+    public static final String TAG = "Walker-SystemWebViewEngine";
 
     protected final SystemWebView webView;
     protected final SystemCookieManager cookieManager;
@@ -106,21 +106,6 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
         webView.init(this, cordova);
 
         initWebViewSettings();
-
-        nativeToJsMessageQueue.addBridgeMode(new NativeToJsMessageQueue.OnlineEventsBridgeMode(new NativeToJsMessageQueue.OnlineEventsBridgeMode.OnlineEventsBridgeModeDelegate() {
-            @Override
-            public void setNetworkAvailable(boolean value) {
-                //sometimes this can be called after calling webview.destroy() on destroy()
-                //thus resulting in a NullPointerException
-                if(webView!=null) {
-                   webView.setNetworkAvailable(value);
-                }
-            }
-            @Override
-            public void runOnUiThread(Runnable r) {
-                SystemWebViewEngine.this.cordova.getActivity().runOnUiThread(r);
-            }
-        }));
         nativeToJsMessageQueue.addBridgeMode(new NativeToJsMessageQueue.EvalBridgeMode(this, cordova));
         bridge = new CordovaBridge(pluginManager, nativeToJsMessageQueue);
         exposeJsInterface(webView, bridge);

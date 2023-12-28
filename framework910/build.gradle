@@ -16,46 +16,11 @@
    under the License.
 */
 
-ext {
-    apply from: 'cordova.gradle'
-    cdvCompileSdkVersion = privateHelpers.getProjectTarget()
-    cdvBuildToolsVersion = privateHelpers.findLatestInstalledBuildTools()
-    if (project.hasProperty('cdvMinSdkVersion') && cdvMinSdkVersion.isInteger()) {
-        cdvMinSdkVersion = cdvMinSdkVersion as int
-        println '[Cordova] cdvMinSdkVersion is overridden, try it at your own risk.'
-    } else {
-        cdvMinSdkVersion = 22; // current Cordova's default
-    }
-}
-
-buildscript {
-    apply from: 'repositories.gradle'
-    repositories repos
-
-    dependencies {
-        // The gradle plugin and the maven plugin have to be updated after each version of Android
-        // studio comes out
-        classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-    }
-}
-
-allprojects {
-    apply from: 'repositories.gradle'
-    repositories repos
-}
-
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-group = 'org.apache.cordova'
-version = '9.1.0'
 
 android {
-    compileSdkVersion cdvCompileSdkVersion
-    buildToolsVersion cdvBuildToolsVersion
+    compileSdkVersion compileSdkVer
+    buildToolsVersion "28.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -64,8 +29,25 @@ android {
 
     // For the Android Cordova Lib, we allow changing the minSdkVersion, but it is at the users own risk
     defaultConfig {
-        minSdkVersion cdvMinSdkVersion
+        minSdkVersion minsdkVer
+        targetSdkVersion targetSdkVer
+        versionCode 1
+        versionName "1.0.0"
     }
+
+    task makeJar(type: Copy) {
+        //删除旧的jar包
+        delete 'build/libs/cordova-9.1.1.jar'
+        //原地址
+        from('build/intermediates/packaged-classes/release/')
+        //导出jar包的地址
+        into('build/libs/')
+        //包含的jar包
+        include('classes.jar')
+        //重命名jar包为mysdk
+        rename ('classes.jar', 'cordova-9.1.1.jar')
+    }
+    makeJar.dependsOn(build)
 
     sourceSets {
         main {
@@ -87,64 +69,12 @@ android {
     }
 }
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                name 'Cordova'
-                url 'https://cordova.apache.org'
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'stevengill'
-                        name 'Steve Gill'
-                    }
-                }
-                scm {
-                    connection 'scm:git:https://github.com/apache/cordova-android.git'
-                    developerConnection 'scm:git:git@github.com:apache/cordova-android.git'
-                    url 'https://github.com/apache/cordova-android'
-
-                }
-            }
-        }
-    }
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
+
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'
-        name = 'cordova-android'
-        userOrg = 'cordova'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/apache/cordova-android'
-        websiteUrl = 'https://cordova.apache.org'
-        issueTrackerUrl = 'https://github.com/apache/cordova-android/issues'
-        publicDownloadNumbers = true
-        licenses = ['Apache-2.0']
-        labels = ['android', 'cordova', 'phonegap']
-        version {
-            name = '9.1.0'
-            released = new Date()
-            vcsTag = '9.1.0'
-        }
-    }
 }

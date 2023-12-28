@@ -12,3 +12,4 @@
 # Project exclude paths
 /framework-x5/build/
 /framework-x5/build/intermediates/classes/debug/
+/framework910/build/
